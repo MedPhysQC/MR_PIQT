@@ -1,0 +1,23 @@
+{
+    "actions": {
+        "acqdatetime": {
+            "filters": {}, 
+            "params": {}
+        }, 
+        "header_series": {
+            "filters": {}, 
+            "params": {}
+        }, 
+        "qc_series": {
+            "filters": {}, 
+            "params": {}
+        }
+    }, 
+    "comments": {
+        "author": "Arnold Schilham, UMCU", 
+        "creator": "generate_config_json.py version 20160822", 
+        "description": "MR/PIQT module for Philips Achieva 7.0T receive/transmit=T/R-head/S", 
+        "specfiles": "", 
+        "version": "20160413"
+    }
+}

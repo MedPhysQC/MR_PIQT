@@ -1,0 +1,23 @@
+{
+    "actions": {
+        "acqdatetime": {
+            "filters": {}, 
+            "params": {}
+        }, 
+        "header_series": {
+            "filters": {}, 
+            "params": {}
+        }, 
+        "qc_series": {
+            "filters": {}, 
+            "params": {}
+        }
+    }, 
+    "comments": {
+        "author": "Arnold Schilham, UMCU", 
+        "creator": "generate_config_json.py version 20160822", 
+        "description": "MR/PIQT module for Philips Achieva 3.0T receive/transmit=SENSE-Head-8/B", 
+        "specfiles": "S: t30r3v2l3_gr5_rf0_l02_nt.spec, C: t30r3v2l3_gr5_rf0_l02_nt.cust", 
+        "version": "20160413"
+    }
+}

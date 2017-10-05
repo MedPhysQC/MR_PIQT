@@ -1,0 +1,150 @@
+{
+    "comments": {
+        "author": "Arnold Schilham, UMCU", 
+        "creator": "generate_config_json.py version 20160822", 
+        "description": "MR/PIQT module for Philips Ingenia 3.0T receive/transmit=MULTI COIL/S"
+    }, 
+    "results": [
+        {
+            "constraint_period": 14, 
+            "description": "date and time of acquisition", 
+            "display_level": 2, 
+            "display_name": "DateTime", 
+            "name": "AcquisitionDateTime", 
+            "units": ""
+        }, 
+        {
+            "constraint_equals": "PIQT", 
+            "description": "patient name", 
+            "display_level": 1, 
+            "display_name": "patient name_2_1_15", 
+            "name": "Patient Name_QA2_2_1_15", 
+            "units": ""
+        }, 
+        {
+            "constraint_minlowhighmax": [
+                56.0, 
+                56.0, 
+                79.0, 
+                79.0
+            ], 
+            "description": "signal to noise ratio", 
+            "display_level": 2, 
+            "display_name": "S/N (B)_2_1_15", 
+            "name": "S/N (B)_QA2_2_1_15", 
+            "units": ""
+        }, 
+        {
+            "constraint_minlowhighmax": [
+                45.0, 
+                45.0, 
+                100.0, 
+                100.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 2, 
+            "display_name": "C-10/C+10_2_1_15", 
+            "name": "C-10/C+10_QA2_2_1_15", 
+            "units": ""
+        }, 
+        {
+            "constraint_minlowhighmax": [
+                0.0, 
+                0.0, 
+                100.0, 
+                100.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 2, 
+            "display_name": "Rad 10%_2_1_15", 
+            "name": "Rad 10%_QA2_2_1_15", 
+            "units": ""
+        }, 
+        {
+            "constraint_minlowhighmax": [
+                0.0, 
+                0.0, 
+                12.0, 
+                12.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 2, 
+            "display_name": "T/C-20_2_1_15", 
+            "name": "T/C-20_QA2_2_1_15", 
+            "units": ""
+        }, 
+        {
+            "constraint_minlowhighmax": [
+                0.0, 
+                0.0, 
+                15.0, 
+                15.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 2, 
+            "display_name": "C-20/C-10_2_1_15", 
+            "name": "C-20/C-10_QA2_2_1_15", 
+            "units": ""
+        }, 
+        {
+            "constraint_minlowhighmax": [
+                0.0, 
+                0.0, 
+                25.0, 
+                25.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 2, 
+            "display_name": "C+10/C+20_2_1_15", 
+            "name": "C+10/C+20_QA2_2_1_15", 
+            "units": ""
+        }, 
+        {
+            "constraint_minlowhighmax": [
+                0.0, 
+                0.0, 
+                12.0, 
+                12.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 2, 
+            "display_name": "C+20/Max_2_1_15", 
+            "name": "C+20/Max_QA2_2_1_15", 
+            "units": ""
+        }, 
+        {
+            "constraint_equals": "PIQT", 
+            "description": "patient name", 
+            "display_level": 1, 
+            "display_name": "patient name_3_1_15", 
+            "name": "Patient Name_QA2_3_1_15", 
+            "units": ""
+        }, 
+        {
+            "constraint_minlowhighmax": [
+                1.9, 
+                1.9, 
+                2.2, 
+                2.2
+            ], 
+            "description": "full width half maximum", 
+            "display_level": 1, 
+            "display_name": "FWHM_3_1_15", 
+            "name": "FWHM_QA2_3_1_15", 
+            "units": ""
+        }, 
+        {
+            "constraint_minlowhighmax": [
+                2.2, 
+                2.2, 
+                2.5, 
+                2.5
+            ], 
+            "description": "slice integral", 
+            "display_level": 1, 
+            "display_name": "Slice_int_3_1_15", 
+            "name": "Slice_int_QA2_3_1_15", 
+            "units": ""
+        }
+    ]
+}
