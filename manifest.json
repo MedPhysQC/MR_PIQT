@@ -1,0 +1,19 @@
+{
+    "info": {
+        "dbversion": "20180209",
+        "magic": "wad-qc-factory"
+    },
+    "module": {
+        "description": "MR PIQT",
+        "executable": "QCMR_wadwrapper.py",
+        "name": "MR_PIQT",
+        "code": "python",
+        "dependencies": [
+            "pillow",
+            "numpy",
+            "pydicom",
+            "scipy",
+            "matplotlib"
+        ]
+    }
+}

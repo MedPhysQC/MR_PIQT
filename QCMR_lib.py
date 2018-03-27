@@ -20,6 +20,9 @@ TODO: Linearity : m/p angle
 TODO: SliceProfile: phase shift
 TODO: pixelsizes
 Changelog:
+    20180327: Removed some outdated comments.
+    20171116: fix scipy version 1.0
+    20170929: Missing transmit coil type tag
     20170109: Protocolnames are sometimes prefixed by WIP
     20161220: remove class variables; remove testing stuff
     20160902: sync with wad2.0; Unified pywad1.0 and wad2.0
@@ -42,7 +45,7 @@ Changelog:
     20131010: FFU calc of rad10 and rad20 by Euclidean distance transform
     20131009: Finished SNR; finished ArtLevel; finish FloodField Uniformity
 """
-__version__ = '20170109'
+__version__ = '20180327'
 __author__ = 'aschilham'
 
 import numpy as np
@@ -77,8 +80,9 @@ from PIL import ImageDraw # imagedraw from pillow is needed, not pil
 import scipy.misc
 # sanity check: we need at least scipy 0.10.1 to avoid problems mixing PIL and Pillow
 scipy_version = [int(v) for v in scipy.__version__ .split('.')]
-if scipy_version[1]<10 or (scipy_version[1] == 10 and scipy_version[1]<1):
-    raise RuntimeError("scipy version too old. Upgrade scipy to at least 0.10.1")
+if scipy_version[0] == 0:
+    if scipy_version[1]<10 or (scipy_version[1] == 10 and scipy_version[1]<1):
+        raise RuntimeError("scipy version too old. Upgrade scipy to at least 0.10.1")
 
 class PiQT_Struct:
     def __init__ (self,dcmInfile,pixeldataIn,dicomMode,piqttest):
@@ -178,24 +182,6 @@ class PiQT_QC:
     def __init__ (self):
         self.qcversion = __version__
 
-    """
-        ** head and body coils
-        The parameters used are:
-        ROI size to calculate C:    30 * 30 pixels
-        ROI pos. to calculate C:    centre of image for body phantoms and for transverse head phantoms.
-        ROI used for sd(B):         40 * 10 pixels at corner of FOV.
-        histogram ROI:              FOV
-        number of steps, N:         2 (5 grey levels)
-        percentage, S:              10%
-        threshold value:            10 * B (Ntot = number of pixels within phantom)
-        names percentage ratios:    T/C-20, C-20/C-10, C-10/C+10, C+10/C+20, C+20/MAX
-        radius percentages:         10%, 20%
-
-        Notes:
-        1) The histogram values are obtained from the image after applying a filter to reduce noise influences.
-        2) The centre ROI is shifted 50mm upwards in case of sagittal and coronal head phantom images, to minimize the effect of mirroring.
-        3) Analysis is not allowed on images with a pixel resolution of less than 12bits/pixel since this would result to incomparable values.
-    """        
 #----------------------------------------------------------------------
     def readDICOMtag(self,cs,key,imslice=0): # slice=2 is image 3
         value = wadwrapper_lib.readDICOMtag(key,cs.dcmInfile,imslice)
@@ -285,29 +271,23 @@ class PiQT_QC:
 
     def SliceProfile(self,cs_mr):
         """
-        The slice profile is defined as the transverse magnetization as a function of the position
+        Slice profile thickness of the transverse magnetization as a function of the position
         in the selection direction. 
-        The slice profile is calculated from the image of the slice thickness section of the head
-        phantom. This section has a double ramp with a width of 1mm and a wedge. The angle
+        The slice profile is calculated from a double ramp with a width of 1mm and a wedge. The angle
         of the ramps and the wedge with respect to the image plane is 11.31 degrees.
 
-        Two types of slice profile calculations are carried out:
-            Modulus: This method calculates the slice profile from the modulus image.
+        Two calculations are defined:
+            Modulus: Calculates the slice profile from the modulus image.
                 A profile across the ramp section or differentiation of a profile along the
                 wedge yields the slice profile. To increase the SNR of the calculated slice
                 profile a number of profiles are averaged.
-            MXY: This method is similar to the above.
-                The difference is that the averaging of profiles is performed in the real and
+            MXY: Similar to modulus, but the averaging of profiles is performed in the real and
                 imaginary image before the modulus is taken.
-                The advantages are:
-                    1) The edges of the slice profile are less disturbed due to backfolding of the
-                    noise.
-                    2) The phase of the magnetization in the selection direction can be determined.
 
-        In order to characterize the slice profile a number of parameters are defined:
+        The slice profile is measured as:
             FWHM: Full Width Half Maximum of slice profile.
             FWTM: Full Width at Tenth Maximum.
-            Slice Integral : Integral of slice profile i.e. the energy stored in the slice.
+            Slice Integral: Integral of slice profile i.e. the energy stored in the slice.
             Phase shift: Phase difference in selection direction (only Mxy).
 
         This procedure consists of three steps:
@@ -327,9 +307,6 @@ class PiQT_QC:
         The NEMA procedure is identical to the Philips quality procedure except that only
         'modulus' calculations are performed.
 
-        """
-
-        """
         Workflow:
             1. Determine slice thickness -> ramp (>=5mm) or wedge
             2. Determine scan sequence -> Mxy (SE,IR), Modulus (FFE)
@@ -422,14 +399,10 @@ class PiQT_QC:
             Define R = 2*F1/(F1+F2)*tan(t1+t2)
             then phi = arctan[1/R*(+/- sqrt(1+F2/F1*R^2)-1)]-t1; use plus sign when t1+t2<90 deg and otherwise minus
 
-        Slice Integral : Integral of slice profile i.e. the energy stored in the slice.
-        AS1: Kan niet kloppen, want Philips geeft waarde in mm voor integral
-            waarschijnlijk som p(i)*dx, en dan delen door phi. Maar
-            moet je hier corrigeren voor offset? 1/(phi-plo)*sum_i (p(i)-plo)*dx
-        AS2: Lijkt erop dat alle slice profile waarden door Philips vertaald zijn naar afschatting van slice thickness
+        Slice Integral: Integral of slice profile.
         Note that the wedge profile should be differentiated to get the slice profile
-        Note that for Mxy first make rois and calculate line averages in both real and,
-          imaginary, then calc modulus and continue to FWHM 
+        Note that for Mxy first make ROIs and calculate line averages in both real and,
+          imaginary, then calculate the modulus and continue to FWHM 
         """
         rois = []
         fwhm_mm = []
@@ -680,11 +653,11 @@ class PiQT_QC:
         head phantom. The procedure for evaluation of an image of this section is as follows:
             For the measurement and the preparation direction the Edge Response Function
                 (ERF) is determined from the 'image' of the edge of the square hole.
-                Differentiation of the ERF's yield the Line Spread Functions (LSF) in the measure-
+                Differentiation of the ERFs yield the Line Spread Functions (LSF) in the measure-
                 ment and preparation directions.
-            The MTF's in measurement and preparation directions are obtained by taking the
-                Fourier Transforms of the LSF's.
-        To characterize the LSF's and MTF's the following parameters are calculated for both the
+            The MTFs in measurement and preparation directions are obtained by taking the
+                Fourier Transforms of the LSFs.
+        To characterize the LSFs and MTFs the following parameters are calculated for both the
         measurement and preparation direction:
             pixel size: Width between the two first zeros of the LSF.
             MTF_50: Full Width at Half Maximum, FWHM, expressed in line pairs per pixel.
@@ -1055,16 +1028,13 @@ class PiQT_QC:
 
     def ArtifactLevel(self,cs_mr):
         """
-        The artifact level is defined as: artefact level = (G-B)*100/R % with,
+        This procedure is very similar to the NEMA Ghosting Level.
+
+        The artifact level is defined as: artefact level = (G-B)*100/2R % with,
         G: Maximum mean value of ROI of 3*3 pixels in background of image. The edges of the image are masked.
         B: Mean pixel value of ROI in ghost-free part of background.
         R: Mean pixel value of ROI at reference position. The reference position depends on the coil type.
 
-        AS: Dit lijkt erg op NEMA Ghosting, maar daar wordt gedeeld door 2R. Als we dat hier
-        ook doen, dan komt de waarde goed
-        """
-
-        """
         Workflow:
             1. determine sequence (this determines which imslice to use)
             2. determine body_head coil or surface coils
@@ -1122,15 +1092,20 @@ class PiQT_QC:
 
     def FloodFieldUniformity(self,cs_mr):
         """
-        The procedure for the evaluation of floodfield uniformity consists of two steps:
-        Step 1:
-            A contour ('grey scale') plot of the image is created as follows:
+        Make some contour plots for visual inspection and calculate different values 
+         to characterize the uniformity. 
+        
+        The specific values have the following meanings: 
+         C-20/C-10 means: percentage of pixels with values between C-20% and C-10%, 
+           taking only into account the pixels with values larger than T
+
+        A contour ('grey scale') plot of the image is created as follows:
 
             1. The mean pixel values C (centre) and B (background),
-                of ROI's at a reference position R are calculated.
+                of ROIs at a reference position R are calculated.
                 The reference position depends on the coil type.
             2. A grey value is assigned to every pixel using the following algorithm:
-             For N=2: (Head and Body coils, and also Surface Coils?)
+             For N=2: (Head and Body coils)
                 T           < pixel value < C-N*S       black  T/C-20
                 C-N*S       < pixel value < C-(N-1)*S   grey 1 C-20/C-10
                 C-(N-1)*S   < pixel value < C+(N-1)*S   grey 2 C-10/C+10
@@ -1150,33 +1125,21 @@ class PiQT_QC:
                  N: number of steps
                  S: step size = percentage*(C-B) 10% for Head and Body coils, 20% for Surface coils
                  2*N+1:number of contours, i.e. grey values
-        Step 2:
-            Because the shape of a contour plot can hardly be specified, a histogram calculation is
-            performed to be able to specify floodfield uniformity.
 
-            The histogram calculation proceeds as follows:
+        Histogram calculations:
+
             1. A ROI (region of interest) for histogram calculation is defined:
                 size and shape depends on the coil type.
             2. The number of pixels within the histogram ROI which have a pixel value larger than
                 T, i.e. pixels which are not black, is determined: Ntot.
             3. For every grey value the percentage ratio is calculated:
                 percentage ratio = <number of pixels with a certain grey value> / Ntot.
-            4. The percentage ratio's are used to specify the floodfield uniformity.
+            4. The percentage ratios are used to specify the floodfield uniformity.
 
-        Notes:
-        1) The histogram values are obtained from the image after applying a filter to re-
-        duce noise influences.
-
-        AS: Klopt niet. pv groter dan T is al black, dus 3 moet zijn at least black
-        Waar het op neer komt is dat C-20/C-10 betekent: het percentage pixels met een waarde tussen C-20% en C-10%,
-        waarbij alleen de pixels met een waarde groter dan T worden meegenomen
 
         rad_10%: Radius of the largest circle which fits in the C-10/C+10 area. grey2
         rad_20%: Radius of the largest circle which fits in the C-20/C+20 area. grey1+grey2+grey3
 
-        """
-
-        """
         Workflow:
             1. Find C and B
             2. Smooth image slice
@@ -1279,10 +1242,8 @@ class PiQT_QC:
          ROI =
          The image is filtered to reduce noise influences on the values of the maximum pixel
             value and the minimum pixel value. The specification area is a circular ROI, with the
-            centre of the image as centre and with a radius of 150mm and 300mm for the head
-            and body coil, respectively.
+            centre of the image as centre and with a radius of 150mm for the head coil.
 
-        AS: Klopt niet. Diameter is 150mm, anders al out of phantom
          """
         # 3. Smoothing: moving average of image
         data = self._lowpassfilter(cs_mr.pixeldataIn[cs_mr.snr_slice].astype(float))
@@ -1303,12 +1264,7 @@ class PiQT_QC:
 
         # report value
         cs_mr.ffu_lin_unif = 100.*(maxval-minval)/(maxval+minval)
-
         cs_mr.resultimage['FFU'] = copy.deepcopy(contourimage)
-
-#        plt.figure()
-#        plt.imshow(contourimage.transpose())
-#        cs_mr.hasmadeplots = True
 
         error = False
         return error
@@ -1350,11 +1306,9 @@ class PiQT_QC:
             size_hor: distance between the outer discs on the horizontal axis.
             size_ver: distance between the outer discs on the vertical axis.
 
-        AS: The SPT manual ignores a possible scaling in the matching of theoretical grid, so
-            I assume that the theoretical distances should remain 25 mm, and scaling should be prevented
-        """
+        Note that a possible scaling in the matching of theoretical grid should be prevented; the 
+          theoretical distances should remain 25 mm.
 
-        """
         Workflow:
             1. Make grid of theoretical positions
             2. Find real location starting from theoretical ones, acc 1/4 pixel
@@ -1574,9 +1528,6 @@ class PiQT_QC:
         sigma = self.phantommm2pix(cs_mr,defdiamm/2.)
         cs_mr.resultimage['LIN'] = scind.gaussian_filter(data.astype(float), sigma,mode='constant')
 
-#        print("NEMA")
-#        for la,ne in zip(cs_mr.lin_nema_label, cs_mr.lin_nema):
-#            print(la,ne)
         error = False
         return error
 
@@ -1594,6 +1545,7 @@ class PiQT_QC:
                 ["0008,0031", "Series Time"],# no ScanTime 0008,0032 in EnhancedDicom
                 ["0018,1250", "Receive Coil Name"], # Q-Body
                 ["0018,1251", "Transmit Coil Name"], # B
+                ["0018,9051", "Transmit Coil Type"], # SURFACE
                 ["0018,0095", "Pixel Bandwidth"], # 219
                 ["0018,0020", "Scanning Sequence"], # SE
                 ["0018,0021", "Scanning Variant"], # SS

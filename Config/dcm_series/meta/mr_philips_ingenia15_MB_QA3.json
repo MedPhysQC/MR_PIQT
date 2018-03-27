@@ -1,0 +1,307 @@
+{
+    "comments": {
+        "author": "Arnold Schilham, UMCU", 
+        "creator": "generate_config_json.py version 20180219", 
+        "description": "MR/PIQT for Philips Ingenia 1.5T receive/transmit=MULTI COIL/B"
+    }, 
+    "results": {
+        "AcquisitionDateTime": {
+            "constraint_period": 14, 
+            "description": "date and time of acquisition", 
+            "display_level": 2, 
+            "display_name": "DateTime", 
+            "units": ""
+        }, 
+        "C+10/C+20_QA3_1_1_50": {
+            "constraint_minlowhighmax": [
+                0.0, 
+                0.0, 
+                1.0, 
+                1.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 2, 
+            "display_name": "C+10/C+20_1_1_50", 
+            "units": "%"
+        }, 
+        "C+10/C+20_QA3_1_2_100": {
+            "constraint_minlowhighmax": [
+                0.0, 
+                0.0, 
+                1.0, 
+                1.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 2, 
+            "display_name": "C+10/C+20_1_2_100", 
+            "units": "%"
+        }, 
+        "C+10/C+20_QA3_1_3_150": {
+            "constraint_minlowhighmax": [
+                0.0, 
+                0.0, 
+                1.0, 
+                1.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 2, 
+            "display_name": "C+10/C+20_1_3_150", 
+            "units": "%"
+        }, 
+        "C+20/Max_QA3_1_1_50": {
+            "constraint_minlowhighmax": [
+                0.0, 
+                0.0, 
+                1.0, 
+                1.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 1, 
+            "display_name": "C+20/Max_1_1_50", 
+            "units": "%"
+        }, 
+        "C+20/Max_QA3_1_2_100": {
+            "constraint_minlowhighmax": [
+                0.0, 
+                0.0, 
+                1.0, 
+                1.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 1, 
+            "display_name": "C+20/Max_1_2_100", 
+            "units": "%"
+        }, 
+        "C+20/Max_QA3_1_3_150": {
+            "constraint_minlowhighmax": [
+                0.0, 
+                0.0, 
+                1.0, 
+                1.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 1, 
+            "display_name": "C+20/Max_1_3_150", 
+            "units": "%"
+        }, 
+        "C-10/C+10_QA3_1_1_50": {
+            "constraint_minlowhighmax": [
+                90.0, 
+                92.0, 
+                100.0, 
+                100.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 1, 
+            "display_name": "C-10/C+10_1_1_50", 
+            "units": "%"
+        }, 
+        "C-10/C+10_QA3_1_2_100": {
+            "constraint_minlowhighmax": [
+                90.0, 
+                92.0, 
+                100.0, 
+                100.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 1, 
+            "display_name": "C-10/C+10_1_2_100", 
+            "units": "%"
+        }, 
+        "C-10/C+10_QA3_1_3_150": {
+            "constraint_minlowhighmax": [
+                90.0, 
+                92.0, 
+                100.0, 
+                100.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 1, 
+            "display_name": "C-10/C+10_1_3_150", 
+            "units": "%"
+        }, 
+        "C-20/C-10_QA3_1_1_50": {
+            "constraint_minlowhighmax": [
+                0.0, 
+                0.0, 
+                2.0, 
+                2.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 1, 
+            "display_name": "C-20/C-10_1_1_50", 
+            "units": "%"
+        }, 
+        "C-20/C-10_QA3_1_2_100": {
+            "constraint_minlowhighmax": [
+                0.0, 
+                0.0, 
+                2.0, 
+                2.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 1, 
+            "display_name": "C-20/C-10_1_2_100", 
+            "units": "%"
+        }, 
+        "C-20/C-10_QA3_1_3_150": {
+            "constraint_minlowhighmax": [
+                0.0, 
+                0.0, 
+                2.0, 
+                2.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 1, 
+            "display_name": "C-20/C-10_1_3_150", 
+            "units": "%"
+        }, 
+        "FFU__QA3_1_1_50": {
+            "description": "Flood Field Uniformity", 
+            "display_level": 2, 
+            "display_name": "FFU__1_1_50", 
+            "units": ""
+        }, 
+        "FFU__QA3_1_2_100": {
+            "description": "Flood Field Uniformity", 
+            "display_level": 2, 
+            "display_name": "FFU__1_2_100", 
+            "units": ""
+        }, 
+        "FFU__QA3_1_3_150": {
+            "description": "Flood Field Uniformity", 
+            "display_level": 2, 
+            "display_name": "FFU__1_3_150", 
+            "units": ""
+        }, 
+        "Patients Name_QA3_1_1_50": {
+            "constraint_equals": "PIQT", 
+            "description": "patient name", 
+            "display_level": 1, 
+            "display_name": "patient name_1_1_50", 
+            "units": ""
+        }, 
+        "Patients Name_QA3_1_2_100": {
+            "constraint_equals": "PIQT", 
+            "description": "patient name", 
+            "display_level": 1, 
+            "display_name": "patient name_1_2_100", 
+            "units": ""
+        }, 
+        "Patients Name_QA3_1_3_150": {
+            "constraint_equals": "PIQT", 
+            "description": "patient name", 
+            "display_level": 1, 
+            "display_name": "patient name_1_3_150", 
+            "units": ""
+        }, 
+        "Rad 10%_QA3_1_1_50": {
+            "constraint_minlowhighmax": [
+                90.0, 
+                90.0, 
+                100.0, 
+                100.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 1, 
+            "display_name": "Rad 10%_1_1_50", 
+            "units": "%"
+        }, 
+        "Rad 10%_QA3_1_2_100": {
+            "constraint_minlowhighmax": [
+                90.0, 
+                90.0, 
+                100.0, 
+                100.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 1, 
+            "display_name": "Rad 10%_1_2_100", 
+            "units": "%"
+        }, 
+        "Rad 10%_QA3_1_3_150": {
+            "constraint_minlowhighmax": [
+                90.0, 
+                90.0, 
+                100.0, 
+                100.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 1, 
+            "display_name": "Rad 10%_1_3_150", 
+            "units": "%"
+        }, 
+        "S/N (B)_QA3_1_1_50": {
+            "constraint_minlowhighmax": [
+                44.0, 
+                44.0, 
+                62.0, 
+                62.0
+            ], 
+            "description": "signal to noise ratio", 
+            "display_level": 2, 
+            "display_name": "S/N (B)_1_1_50", 
+            "units": "%"
+        }, 
+        "S/N (B)_QA3_1_2_100": {
+            "constraint_minlowhighmax": [
+                39.0, 
+                39.0, 
+                55.0, 
+                55.0
+            ], 
+            "description": "signal to noise ratio", 
+            "display_level": 2, 
+            "display_name": "S/N (B)_1_2_100", 
+            "units": "%"
+        }, 
+        "S/N (B)_QA3_1_3_150": {
+            "constraint_minlowhighmax": [
+                33.0, 
+                33.0, 
+                47.0, 
+                47.0
+            ], 
+            "description": "signal to noise ratio", 
+            "display_level": 2, 
+            "display_name": "S/N (B)_1_3_150", 
+            "units": "%"
+        }, 
+        "T/C-20_QA3_1_1_50": {
+            "constraint_minlowhighmax": [
+                0.0, 
+                0.0, 
+                4.0, 
+                4.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 1, 
+            "display_name": "T/C-20_1_1_50", 
+            "units": "%"
+        }, 
+        "T/C-20_QA3_1_2_100": {
+            "constraint_minlowhighmax": [
+                0.0, 
+                0.0, 
+                4.0, 
+                4.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 1, 
+            "display_name": "T/C-20_1_2_100", 
+            "units": "%"
+        }, 
+        "T/C-20_QA3_1_3_150": {
+            "constraint_minlowhighmax": [
+                0.0, 
+                0.0, 
+                4.0, 
+                4.0
+            ], 
+            "description": "uniformity measure", 
+            "display_level": 1, 
+            "display_name": "T/C-20_1_3_150", 
+            "units": "%"
+        }
+    }
+}

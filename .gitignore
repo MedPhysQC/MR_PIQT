@@ -1,0 +1,41 @@
+# no log files:
+error.log
+*.log
+
+# no build files
+/dist/
+/build/
+/wad_qc.egg-info/
+__pycache__/
+*.pyc
+*.pyo
+
+# no temporary or autosave files
+.\#*
+*~
+~*
+
+# no images
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# latex temporary files
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.fls
+*.idx
+*.ilg
+*.ind
+*.out
+*.synctex.gz
+*.toc
+
+# latex output
+*.pdf
+
+# wingide layout
+*.wpu

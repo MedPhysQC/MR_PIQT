@@ -20,6 +20,7 @@
 #
 #
 # Changelog:
+#   20170929: missing NEMA linearity result
 #   20161220: remove class variables; remove testing stuff
 #   20160802: sync with pywad1.0
 #   20160622: removed adding limits (now part of analyzer)
@@ -28,7 +29,7 @@
 # /QCMR_wadwrapper.py -c Config/mr_philips_achieva30_sHB_umcu_series.json -d TestSet/StudyAchieva30 -r results_achieva30.json
 from __future__ import print_function
 
-__version__ = '20161220'
+__version__ = '20170929'
 __author__ = 'aschilham'
 
 import os
@@ -186,6 +187,7 @@ def qc_series(data, results, action):
                 reportkeyvals.append( ("ver_diff_dev"+idname,cs.lin_intdiffsdev[1]) )
                 reportkeyvals.append( ("ver_max"+idname,cs.lin_intdiffmax[1]) )
                 reportkeyvals.append( ("ver_min"+idname,cs.lin_intdiffmin[1]) )
+                reportkeyvals.append( ("lin_NEMA"+idname,cs.lin_nema_max) )
                 ## Build thumbnail
                 filename = 'LIN'+idname+'.jpg' # Use jpg if a thumbnail is desired
                 qclib.saveResultImage(cs,'LIN',filename)
