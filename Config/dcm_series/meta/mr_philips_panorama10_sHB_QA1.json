@@ -108,6 +108,12 @@
             "display_name": "C-20/C-10_3_2_100", 
             "units": "%"
         }, 
+        "Central_freq_QA1_2_1_30": {
+            "description": "Central Frequency", 
+            "display_level": 2, 
+            "display_name": "Central_freq_QA1_2_1_30", 
+            "units": "MHz"
+        }, 
         "FFU__QA1_3_1_30": {
             "description": "Flood Field Uniformity", 
             "display_level": 2, 
