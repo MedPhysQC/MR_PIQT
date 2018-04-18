@@ -148,7 +148,7 @@
             "constraint_minlowhighmax": [
                 0.0, 
                 0.0, 
-                4.0, 
+                7.0, 
                 8.0
             ], 
             "description": "full width tenth maximum", 
@@ -160,7 +160,7 @@
             "constraint_minlowhighmax": [
                 0.0, 
                 0.0, 
-                4.0, 
+                7.0, 
                 8.0
             ], 
             "description": "full width tenth maximum", 
@@ -172,7 +172,7 @@
             "constraint_minlowhighmax": [
                 0.0, 
                 0.0, 
-                1.0, 
+                1.2, 
                 1.2
             ], 
             "description": "horizontal pixel size", 
@@ -184,7 +184,7 @@
             "constraint_minlowhighmax": [
                 0.0, 
                 0.0, 
-                1.0, 
+                1.2, 
                 1.2
             ], 
             "description": "horizontal pixel size", 
@@ -371,7 +371,7 @@
             "constraint_minlowhighmax": [
                 0.0, 
                 0.0, 
-                1.0, 
+                1.2, 
                 1.2
             ], 
             "description": "vertical pixel size", 
@@ -383,7 +383,7 @@
             "constraint_minlowhighmax": [
                 0.0, 
                 0.0, 
-                1.0, 
+                1.2, 
                 1.2
             ], 
             "description": "vertical pixel size", 
@@ -508,8 +508,8 @@
         "size_hor_QA1_2_1_30": {
             "constraint_minlowhighmax": [
                 149.5, 
-                149.75, 
-                150.25, 
+                149.5, 
+                150.5, 
                 150.5
             ], 
             "description": "horizontal size", 

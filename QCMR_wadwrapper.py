@@ -20,6 +20,7 @@
 #
 #
 # Changelog:
+#   20180418: treat DICOM Central_freq as float result
 #   20170929: missing NEMA linearity result
 #   20161220: remove class variables; remove testing stuff
 #   20160802: sync with pywad1.0
@@ -29,7 +30,7 @@
 # /QCMR_wadwrapper.py -c Config/mr_philips_achieva30_sHB_umcu_series.json -d TestSet/StudyAchieva30 -r results_achieva30.json
 from __future__ import print_function
 
-__version__ = '20170929'
+__version__ = '20180418'
 __author__ = 'aschilham'
 
 import os
@@ -317,13 +318,29 @@ def header_series(data, results, action):
                 reportkeyvals.append( (di[0]+idname,str(di[1])) )
 
     ## 2. Build xml output
+    floatlist = [
+        'Central_freq'
+    ]
     # plugionversion is newly added in for this plugin since pywad2
     varname = 'pluginversion'+idname
     results.addString(varname, str(qclib.qcversion)) # do use default from config
     for key,val in reportkeyvals:
-        val2 = "".join([x if ord(x) < 128 else '?' for x in val]) #ignore non-ascii 
-        results.addString(key, str(val2)[:min(len(str(val)),100)]) # do use default from config
+        is_float = False
+        for fl in floatlist:
+            if key.startswith(fl):
+                is_float = True
+                break
 
+        if is_float:
+            try:
+                val2 = float(val)
+            except ValueError:
+                val2 = -1
+            results.addFloat(key, val2)
+        else:
+            val2 = "".join([x if ord(x) < 128 else '?' for x in val]) #ignore non-ascii 
+            results.addString(key, str(val2)[:min(len(str(val)),100)]) # do use default from config
+    
 def make_idname(qclib,cs,sliceno):
     idname = ''
     idfields = [

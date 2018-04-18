@@ -18,6 +18,6 @@
         "creator": "generate_config_json.py version 20180219", 
         "description": "MR/PIQT for Philips Panorama HFO 1.0T receive/transmit=SENSE-Head-8/B", 
         "specfiles": "S: p10r2v6l3_02_l01_nt.spec, C: p10r2v6l3_02_l13_nt.cust", 
-        "version": "20160413"
+        "version": "20180418"
     }
 }
