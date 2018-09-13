@@ -13,11 +13,23 @@
             "params": {}
         }
     }, 
+    "cfgformat": "20180910", 
     "comments": {
         "author": "Arnold Schilham, UMCU", 
-        "creator": "generate_config_json.py version 20180219", 
+        "creator": "generate_config_json.py version 20180912", 
         "description": "MR/PIQT for Philips Achieva 3.0T receive/transmit=SENSE-Head-8/B", 
         "specfiles": "S: t30r3v2l3_gr5_rf0_l02_nt.spec, C: t30r3v2l3_gr5_rf0_l02_nt.cust", 
         "version": "20160413"
+    }, 
+    "info": {
+        "acqdatetime": {
+            "params": {}
+        }, 
+        "header_series": {
+            "params": {}
+        }, 
+        "qc_series": {
+            "params": {}
+        }
     }
 }
