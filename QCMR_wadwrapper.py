@@ -34,6 +34,7 @@ __version__ = '20180418'
 __author__ = 'aschilham'
 
 import os
+import sys
 # this will fail unless wad_qc is already installed
 from wad_qc.module import pyWADinput
 from wad_qc.modulelibs import wadwrapper_lib
