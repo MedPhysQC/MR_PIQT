@@ -1,7 +1,7 @@
 {
     "comments": {
         "author": "Arnold Schilham, UMCU", 
-        "creator": "generate_config_json.py version 20181105", 
+        "creator": "generate_config_json.py version 20180912", 
         "description": "MR/PIQT for Philips Achieva 1.5T receive/transmit=SENSE-Head-8/B"
     }, 
     "metaformat": "20180910", 

@@ -16,7 +16,7 @@
     "cfgformat": "20180910", 
     "comments": {
         "author": "Arnold Schilham, UMCU", 
-        "creator": "generate_config_json.py version 20181105", 
+        "creator": "generate_config_json.py version 20180912", 
         "description": "MR/PIQT for Philips Achieva 3.0T receive/transmit=SENSE-Head-8/S", 
         "specfiles": "S: t30r3v2l3_gr8_rf1_l02_nt.spec, S: t30r3v2l3_gr8_rf1_l03_nt.spec", 
         "version": "20181105"
