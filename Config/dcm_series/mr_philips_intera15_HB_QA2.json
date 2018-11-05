@@ -16,10 +16,10 @@
     "cfgformat": "20180910", 
     "comments": {
         "author": "Arnold Schilham, UMCU", 
-        "creator": "generate_config_json.py version 20180912", 
+        "creator": "generate_config_json.py version 20181105", 
         "description": "MR/PIQT for Philips Intera 1.5T receive/transmit=Head/B", 
         "specfiles": "S : acsr11v8l1_03_l01_nt.spec C : none", 
-        "version": "20160413"
+        "version": "20181105"
     }, 
     "info": {
         "acqdatetime": {

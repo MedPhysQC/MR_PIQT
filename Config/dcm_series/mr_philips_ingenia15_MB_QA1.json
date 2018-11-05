@@ -16,10 +16,10 @@
     "cfgformat": "20180910", 
     "comments": {
         "author": "Arnold Schilham, UMCU", 
-        "creator": "generate_config_json.py version 20180912", 
+        "creator": "generate_config_json.py version 20181105", 
         "description": "MR/PIQT for Philips Ingenia 1.5T receive/transmit=MULTI COIL/B", 
         "specfiles": "S: wa15r5v1l7_gr4_rf2_l01_irf.spec, T: wa15r5v1l7_gr4_rf2_l01_irf.typ", 
-        "version": "20160413"
+        "version": "20181105"
     }, 
     "info": {
         "acqdatetime": {

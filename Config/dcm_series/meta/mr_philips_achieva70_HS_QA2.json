@@ -1,7 +1,7 @@
 {
     "comments": {
         "author": "Arnold Schilham, UMCU", 
-        "creator": "generate_config_json.py version 20180912", 
+        "creator": "generate_config_json.py version 20181105", 
         "description": "MR/PIQT for Philips Achieva 7.0T receive/transmit=T/R-head/S"
     }, 
     "metaformat": "20180910", 
@@ -15,8 +15,8 @@
         }, 
         "C+10/C+20_QA2_2_1_15": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 10.0, 
                 12.0
             ], 
@@ -27,8 +27,8 @@
         }, 
         "C+20/Max_QA2_2_1_15": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 3.0, 
                 4.0
             ], 
@@ -41,8 +41,8 @@
             "constraint_minlowhighmax": [
                 60.0, 
                 70.0, 
-                100.0, 
-                100.0
+                null, 
+                null
             ], 
             "description": "uniformity measure", 
             "display_level": 1, 
@@ -51,8 +51,8 @@
         }, 
         "C-20/C-10_QA2_2_1_15": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 15.0, 
                 18.0
             ], 
@@ -97,8 +97,8 @@
             "constraint_minlowhighmax": [
                 40.0, 
                 60.0, 
-                100.0, 
-                100.0
+                null, 
+                null
             ], 
             "description": "uniformity measure", 
             "display_level": 1, 
@@ -109,8 +109,8 @@
             "constraint_minlowhighmax": [
                 73.0, 
                 85.0, 
-                120.0, 
-                120.0
+                null, 
+                null
             ], 
             "description": "signal to noise ratio", 
             "display_level": 2, 
@@ -137,8 +137,8 @@
         }, 
         "T/C-20_QA2_2_1_15": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 13.0, 
                 14.0
             ], 

@@ -1,7 +1,7 @@
 {
     "comments": {
         "author": "Arnold Schilham, UMCU", 
-        "creator": "generate_config_json.py version 20180912", 
+        "creator": "generate_config_json.py version 20181105", 
         "description": "MR/PIQT for Philips Panorama HFO 1.0T receive/transmit=SENSE-Head-8/B"
     }, 
     "metaformat": "20180910", 
@@ -15,8 +15,8 @@
         }, 
         "C+10/C+20_QA3_1_1_50": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 4.0, 
                 6.0
             ], 
@@ -27,8 +27,8 @@
         }, 
         "C+10/C+20_QA3_1_2_100": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 4.0, 
                 6.0
             ], 
@@ -39,8 +39,8 @@
         }, 
         "C+10/C+20_QA3_1_3_150": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 6.0, 
                 7.0
             ], 
@@ -51,8 +51,8 @@
         }, 
         "C+20/Max_QA3_1_1_50": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 1.0, 
                 2.0
             ], 
@@ -63,8 +63,8 @@
         }, 
         "C+20/Max_QA3_1_2_100": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 1.0, 
                 2.0
             ], 
@@ -75,8 +75,8 @@
         }, 
         "C+20/Max_QA3_1_3_150": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 1.0, 
                 2.0
             ], 
@@ -89,8 +89,8 @@
             "constraint_minlowhighmax": [
                 85.0, 
                 87.0, 
-                100.0, 
-                100.0
+                null, 
+                null
             ], 
             "description": "uniformity measure", 
             "display_level": 1, 
@@ -101,8 +101,8 @@
             "constraint_minlowhighmax": [
                 85.0, 
                 87.0, 
-                100.0, 
-                100.0
+                null, 
+                null
             ], 
             "description": "uniformity measure", 
             "display_level": 1, 
@@ -113,8 +113,8 @@
             "constraint_minlowhighmax": [
                 82.0, 
                 84.0, 
-                100.0, 
-                100.0
+                null, 
+                null
             ], 
             "description": "uniformity measure", 
             "display_level": 1, 
@@ -123,8 +123,8 @@
         }, 
         "C-20/C-10_QA3_1_1_50": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 6.0, 
                 7.0
             ], 
@@ -135,8 +135,8 @@
         }, 
         "C-20/C-10_QA3_1_2_100": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 7.0, 
                 8.0
             ], 
@@ -147,8 +147,8 @@
         }, 
         "C-20/C-10_QA3_1_3_150": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 9.0, 
                 10.0
             ], 
@@ -200,8 +200,8 @@
             "constraint_minlowhighmax": [
                 70.0, 
                 75.0, 
-                100.0, 
-                100.0
+                null, 
+                null
             ], 
             "description": "uniformity measure", 
             "display_level": 1, 
@@ -212,8 +212,8 @@
             "constraint_minlowhighmax": [
                 60.0, 
                 65.0, 
-                100.0, 
-                100.0
+                null, 
+                null
             ], 
             "description": "uniformity measure", 
             "display_level": 1, 
@@ -224,8 +224,8 @@
             "constraint_minlowhighmax": [
                 55.0, 
                 60.0, 
-                90.0, 
-                90.0
+                null, 
+                null
             ], 
             "description": "uniformity measure", 
             "display_level": 1, 
@@ -236,8 +236,8 @@
             "constraint_minlowhighmax": [
                 49.0, 
                 51.0, 
-                75.0, 
-                75.0
+                null, 
+                null
             ], 
             "description": "signal to noise ratio", 
             "display_level": 2, 
@@ -248,8 +248,8 @@
             "constraint_minlowhighmax": [
                 41.0, 
                 43.0, 
-                70.0, 
-                70.0
+                null, 
+                null
             ], 
             "description": "signal to noise ratio", 
             "display_level": 2, 
@@ -260,8 +260,8 @@
             "constraint_minlowhighmax": [
                 35.0, 
                 37.0, 
-                70.0, 
-                70.0
+                null, 
+                null
             ], 
             "description": "signal to noise ratio", 
             "display_level": 2, 
@@ -270,8 +270,8 @@
         }, 
         "T/C-20_QA3_1_1_50": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 4.0, 
                 5.0
             ], 
@@ -282,8 +282,8 @@
         }, 
         "T/C-20_QA3_1_2_100": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 4.0, 
                 5.0
             ], 
@@ -294,8 +294,8 @@
         }, 
         "T/C-20_QA3_1_3_150": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 5.0, 
                 6.0
             ], 

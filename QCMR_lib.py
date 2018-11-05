@@ -103,6 +103,7 @@ class PiQT_Struct:
         self.snr_stdevs = [] # Stdev in Center, Background
         self.snr_rois   = [] # xy roi definitions # format: x0,wid, yo,hei
         self.snr_slice  = -1
+        self.snr_slice2 = -1
         self.snr_bkgrnd = -1
         self.snr_SNC = -1
         self.snr_SNB = -1
@@ -936,7 +937,8 @@ class PiQT_QC:
 
     def SNR_NEMA2(self, cs_mr):
         """
-        SNR calculated using 2 images to determine noise
+        SNR calculated using 2 images to determine noise. This requires both images are
+        exactly the same, which is not the case for PIQT sets, so do NOT use.
 
         The SNR is defined as: SNR = sqrt(2)*R/sd(B) with,
         R: Mean pixel value of ROI at reference position.
@@ -1015,10 +1017,22 @@ class PiQT_QC:
 
         # add difference image
         r = cs_mr.snr_rois[0]
+        mean = cs_mr.pixeldataIn[cs_mr.snr_slice][r[0]:(r[0]+r[1]),r[2]:(r[2]+r[3])]
+
+        m1 = np.mean(cs_mr.pixeldataIn[cs_mr.snr_slice,r[0]:(r[0]+r[1]),r[2]:(r[2]+r[3])])
+        m2 = np.mean(cs_mr.pixeldataIn[cs_mr.snr_slice2,r[0]:(r[0]+r[1]),r[2]:(r[2]+r[3])])
+
+        print("NEMA2: m1/m2 = ", m1/m2)
         diff = (cs_mr.pixeldataIn[cs_mr.snr_slice]-cs_mr.pixeldataIn[cs_mr.snr_slice2])[r[0]:(r[0]+r[1]),r[2]:(r[2]+r[3])]
+
+        cs_mr.snr_means[0] = np.mean(mean)
+        cs_mr.snr_stdevs[0] = np.std(mean)
         cs_mr.snr_means[1] = np.mean(diff)
         cs_mr.snr_stdevs[1] = np.std(diff)
-
+        if not 'SNR_DIFF' in cs_mr.resultimage.keys():
+            cs_mr.resultimage['SNR_DIFF'] = cs_mr.pixeldataIn[cs_mr.snr_slice]-cs_mr.pixeldataIn[cs_mr.snr_slice2]
+            cs_mr.resultimage['SNR_SIGNAL'] = cs_mr.pixeldataIn[cs_mr.snr_slice]
+        
         # report values
         cs_mr.snr_SNC = cs_mr.snr_means[0]/cs_mr.snr_stdevs[0]
         cs_mr.snr_SNB = np.sqrt(2.)*cs_mr.snr_means[0]/cs_mr.snr_stdevs[1]
@@ -1070,17 +1084,26 @@ class PiQT_QC:
         wid = cs_mr.pixeldataIn.shape[1]
         hei = cs_mr.pixeldataIn.shape[2]
 
-        roiwidth  = 32 #32
-        roiheight = 32 #32
+        roiwidth  = 48 #32
+        roiheight = 48 #32
+        roiwidthsd  = 32 #32
+        roiheightsd = 32 #32
         roidx     = 4 #4
         roidy     = 4 #4
         cs_mr.snr_rois = [] # format: x0,wid, y0,hei
         cs_mr.snr_rois.append([int((wid-roiwidth)/2),roiwidth, int((hei-roiheight)/2), roiheight])
-        cs_mr.snr_rois.append([roidx,roiwidth, roidy,roiheight])
-        cs_mr.snr_rois.append([roidx,roiwidth, hei-roiheight-roidy,roiheight])
-        cs_mr.snr_rois.append([wid-roiwidth-roidx,roiwidth, hei-roiheight-roidy,roiheight])
-        cs_mr.snr_rois.append([wid-roiwidth-roidx,roiwidth, roidy,roiheight])
+        # try to move the noise ROI to an artefact-free part of the background
+        for roidx in [4,6,8,10,12,14]:
+            for roidy in [4,6,8,10,12,14]:
+                for roiwidthsd in [8,16,32,64]:
+                    roiheightsd = int(32*32./roiwidthsd)
+                    cs_mr.snr_rois.append([roidx,roiwidthsd, roidy,roiheightsd])
+                    cs_mr.snr_rois.append([roidx,roiwidthsd, hei-roiheightsd-roidy,roiheightsd])
+                    cs_mr.snr_rois.append([wid-roiwidthsd-roidx,roiwidthsd, hei-roiheightsd-roidy,roiheightsd])
+                    cs_mr.snr_rois.append([wid-roiwidthsd-roidx,roiwidthsd, roidy,roiheightsd])
 
+        r = cs_mr.snr_rois[0]
+        #print(np.mean(cs_mr.pixeldataIn[cs_mr.snr_slice,r[0]:(r[0]+r[1]),r[2]:(r[2]+r[3])]), np.mean(cs_mr.pixeldataIn[cs_mr.snr_slice+1,r[0]:(r[0]+r[1]),r[2]:(r[2]+r[3])]))
         for r in cs_mr.snr_rois:
             data = cs_mr.pixeldataIn[cs_mr.snr_slice,r[0]:(r[0]+r[1]),r[2]:(r[2]+r[3])]
             cs_mr.snr_means.append(np.mean(data))
@@ -1124,6 +1147,8 @@ class PiQT_QC:
         piqttest2 = [ c+1 if i == 3 else c for i,c in enumerate(cs_mr.piqttest) ]
         (seqname2,imagetype2,slice_number2,echo_num2,echo_time2) = piqttest2
         cs_mr.snr_slice2 = self.ImageSliceNumber(cs_mr,piqttest2)
+        # disable SNR_NEMA2 as echo2 and echo 1 are not (always) identical
+        cs_mr.snr_slice2 = -1
         if cs_mr.snr_slice2 <0:
             print("[SNR] Test", lit.stTestUniformity,"no 2nd image available; will use NEMA method 1",imagetype,echo_num)
             return self.SNR_NEMA1(cs_mr)

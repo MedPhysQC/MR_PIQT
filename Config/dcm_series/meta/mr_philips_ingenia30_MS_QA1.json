@@ -1,7 +1,7 @@
 {
     "comments": {
         "author": "Arnold Schilham, UMCU", 
-        "creator": "generate_config_json.py version 20180912", 
+        "creator": "generate_config_json.py version 20181105", 
         "description": "MR/PIQT for Philips Ingenia 3.0T receive/transmit=MULTI COIL/S"
     }, 
     "metaformat": "20180910", 
@@ -15,8 +15,8 @@
         }, 
         "C+10/C+20_QA1_3_1_30": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 20.0, 
                 20.0
             ], 
@@ -27,8 +27,8 @@
         }, 
         "C+10/C+20_QA1_3_2_100": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 20.0, 
                 20.0
             ], 
@@ -39,8 +39,8 @@
         }, 
         "C+20/Max_QA1_3_1_30": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 4.0, 
                 4.0
             ], 
@@ -51,8 +51,8 @@
         }, 
         "C+20/Max_QA1_3_2_100": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 4.0, 
                 4.0
             ], 
@@ -65,8 +65,8 @@
             "constraint_minlowhighmax": [
                 55.0, 
                 55.0, 
-                100.0, 
-                100.0
+                null, 
+                null
             ], 
             "description": "uniformity measure", 
             "display_level": 1, 
@@ -77,8 +77,8 @@
             "constraint_minlowhighmax": [
                 55.0, 
                 55.0, 
-                100.0, 
-                100.0
+                null, 
+                null
             ], 
             "description": "uniformity measure", 
             "display_level": 1, 
@@ -87,8 +87,8 @@
         }, 
         "C-20/C-10_QA1_3_1_30": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 14.0, 
                 14.0
             ], 
@@ -99,8 +99,8 @@
         }, 
         "C-20/C-10_QA1_3_2_100": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 14.0, 
                 14.0
             ], 
@@ -177,8 +177,8 @@
         }, 
         "Hor_pxl_size_QA1_5_1_30": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 1.2, 
                 1.2
             ], 
@@ -189,8 +189,8 @@
         }, 
         "Hor_pxl_size_QA1_5_2_100": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 2.4, 
                 2.4
             ], 
@@ -270,8 +270,8 @@
             "constraint_minlowhighmax": [
                 40.0, 
                 40.0, 
-                100.0, 
-                100.0
+                null, 
+                null
             ], 
             "description": "uniformity measure", 
             "display_level": 1, 
@@ -282,8 +282,8 @@
             "constraint_minlowhighmax": [
                 40.0, 
                 40.0, 
-                100.0, 
-                100.0
+                null, 
+                null
             ], 
             "description": "uniformity measure", 
             "display_level": 1, 
@@ -294,8 +294,8 @@
             "constraint_minlowhighmax": [
                 81.0, 
                 81.0, 
-                114.0, 
-                114.0
+                null, 
+                null
             ], 
             "description": "signal to noise ratio", 
             "display_level": 2, 
@@ -306,8 +306,8 @@
             "constraint_minlowhighmax": [
                 59.0, 
                 59.0, 
-                83.0, 
-                83.0
+                null, 
+                null
             ], 
             "description": "signal to noise ratio", 
             "display_level": 2, 
@@ -352,8 +352,8 @@
         }, 
         "T/C-20_QA1_3_1_30": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 10.0, 
                 10.0
             ], 
@@ -364,8 +364,8 @@
         }, 
         "T/C-20_QA1_3_2_100": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 10.0, 
                 10.0
             ], 
@@ -376,8 +376,8 @@
         }, 
         "Ver_pxl_size_QA1_5_1_30": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 1.25, 
                 1.25
             ], 
@@ -388,8 +388,8 @@
         }, 
         "Ver_pxl_size_QA1_5_2_100": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 2.5, 
                 2.5
             ], 
@@ -412,8 +412,8 @@
         }, 
         "hor_diff_dev_QA1_2_1_30": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 1.0, 
                 1.0
             ], 
@@ -424,8 +424,8 @@
         }, 
         "hor_int_av_QA1_2_1_30": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 0.5, 
                 0.5
             ], 
@@ -436,8 +436,8 @@
         }, 
         "hor_int_dev_QA1_2_1_30": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 0.5, 
                 0.5
             ], 
@@ -448,8 +448,8 @@
         }, 
         "hor_max_QA1_2_1_30": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 1.0, 
                 1.0
             ], 
@@ -460,8 +460,8 @@
         }, 
         "hor_max_left_QA1_2_1_30": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 0.5, 
                 0.5
             ], 
@@ -472,8 +472,8 @@
         }, 
         "hor_max_right_QA1_2_1_30": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 0.5, 
                 0.5
             ], 
@@ -486,8 +486,8 @@
             "constraint_minlowhighmax": [
                 -1.0, 
                 -1.0, 
-                0.0, 
-                0.0
+                null, 
+                null
             ], 
             "description": "horizontal geometry measure", 
             "display_level": 1, 
@@ -544,8 +544,8 @@
         }, 
         "ver_diff_dev_QA1_2_1_30": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 1.0, 
                 1.0
             ], 
@@ -556,8 +556,8 @@
         }, 
         "ver_int_av_QA1_2_1_30": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 0.5, 
                 0.5
             ], 
@@ -568,8 +568,8 @@
         }, 
         "ver_int_dev_QA1_2_1_30": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 0.5, 
                 0.5
             ], 
@@ -580,8 +580,8 @@
         }, 
         "ver_max_QA1_2_1_30": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 2.0, 
                 2.0
             ], 
@@ -592,8 +592,8 @@
         }, 
         "ver_max_down_QA1_2_1_30": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 1.0, 
                 1.0
             ], 
@@ -604,8 +604,8 @@
         }, 
         "ver_max_up_QA1_2_1_30": {
             "constraint_minlowhighmax": [
-                0.0, 
-                0.0, 
+                null, 
+                null, 
                 0.5, 
                 0.5
             ], 
@@ -618,8 +618,8 @@
             "constraint_minlowhighmax": [
                 -2.0, 
                 -2.0, 
-                0.0, 
-                0.0
+                null, 
+                null
             ], 
             "description": "vertical geometry measure", 
             "display_level": 1, 
