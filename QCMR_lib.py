@@ -20,6 +20,7 @@ TODO: Linearity : m/p angle
 TODO: SliceProfile: phase shift
 TODO: pixelsizes
 Changelog:
+    20181105: Added NEMA 2 image determination of SNR
     20180327: Removed some outdated comments.
     20171116: fix scipy version 1.0
     20170929: Missing transmit coil type tag
@@ -45,7 +46,7 @@ Changelog:
     20131010: FFU calc of rad10 and rad20 by Euclidean distance transform
     20131009: Finished SNR; finished ArtLevel; finish FloodField Uniformity
 """
-__version__ = '20180327'
+__version__ = '20181105'
 __author__ = 'aschilham'
 
 import numpy as np
@@ -102,6 +103,7 @@ class PiQT_Struct:
         self.snr_stdevs = [] # Stdev in Center, Background
         self.snr_rois   = [] # xy roi definitions # format: x0,wid, yo,hei
         self.snr_slice  = -1
+        self.snr_bkgrnd = -1
         self.snr_SNC = -1
         self.snr_SNB = -1
         self.snr_BsdB = -1
@@ -244,7 +246,7 @@ class PiQT_QC:
             ["2005,1011", "Image_Type"], # M,R,I
             ["2001,100a", "Slice Number"], # Philips private, alternative is slice location/slice spacing
             ["0018,0086", "Echo_No"], # 1
-#		    ["0018,0081", "Echo_Time"], # 50
+            # ["0018,0081", "Echo_Time"], # 50
         ]
         if cs.dicomMode == wadwrapper_lib.stMode2D:
             dimz = 1
@@ -932,17 +934,110 @@ class PiQT_QC:
         return pixsize
 
 
-    def SNR(self,cs_mr):
+    def SNR_NEMA2(self, cs_mr):
         """
+        SNR calculated using 2 images to determine noise
+
+        The SNR is defined as: SNR = sqrt(2)*R/sd(B) with,
+        R: Mean pixel value of ROI at reference position.
+        The reference position depends on the coil type.
+        sd(B): Standard deviation of pixel values in same ROI but calculated
+               in the difference image.
+
+        Because the snr_means are also used for Artifacts, do not overwrite them
+        but use same ordering as NEMA1.
+        
+        Workflow:
+            1. determine sequence (this determines which imslice to use)
+            2. determine body_head coil or surface coils
+            3. define ROI
+            4. calculate roi avgs and stdevs
+            5. return all in structure
+        """
+        error = True
+        if cs_mr is None or cs_mr.dcmInfile is None or cs_mr.pixeldataIn is None:
+            print("[SNR] Error: Not a valid PiQT struct")
+            return error
+
+        # 1. image sequence
+        cs_mr.snr_slice = self.ImageSliceNumber(cs_mr,cs_mr.piqttest)
+        if cs_mr.snr_slice <0:
+            (seqname,imagetype,slice_number,echo_num,echo_time) = cs_mr.piqttest
+            print("[SNR] ERROR: Test", lit.stTestUniformity,"not available for given image",imagetype,echo_num)
+            return error
+
+        # 1.2. second image look for next echo
+        piqttest2 = [ c+1 if i == 3 else c for i,c in enumerate(cs_mr.piqttest) ]
+        cs_mr.snr_slice2 = self.ImageSliceNumber(cs_mr,piqttest2)
+        if cs_mr.snr_slice2 <0:
+            (seqname2,imagetype2,slice_number2,echo_num2,echo_time2) = piqttest2
+            print("[SNR] ERROR: Test", lit.stTestUniformity,"using NEMA2; no 2nd image available", imagetype2, echo_num2)
+            return error
+
+        # 2. coiltype
+        coiltype = self.CoilType(cs_mr,cs_mr.snr_slice)
+        if coiltype == lit.stUnknown or coiltype == lit.stCoilSurface:
+            print("[SNR] ERROR: coiltype not recognized")
+            return error
+
+        # 3. SNR
+        cs_mr.snr_means  = []
+        cs_mr.snr_stdevs = []
+
+        wid = cs_mr.pixeldataIn.shape[1]
+        hei = cs_mr.pixeldataIn.shape[2]
+
+        roiwidth  = 32 #32
+        roiheight = 32 #32
+        roidx     = 4 #4
+        roidy     = 4 #4
+        cs_mr.snr_rois = [] # format: x0,wid, y0,hei
+        cs_mr.snr_rois.append([int((wid-roiwidth)/2),roiwidth, int((hei-roiheight)/2), roiheight])
+        cs_mr.snr_rois.append([roidx,roiwidth, roidy,roiheight])
+        cs_mr.snr_rois.append([roidx,roiwidth, hei-roiheight-roidy,roiheight])
+        cs_mr.snr_rois.append([wid-roiwidth-roidx,roiwidth, hei-roiheight-roidy,roiheight])
+        cs_mr.snr_rois.append([wid-roiwidth-roidx,roiwidth, roidy,roiheight])
+
+        for r in cs_mr.snr_rois:
+            data = cs_mr.pixeldataIn[cs_mr.snr_slice,r[0]:(r[0]+r[1]),r[2]:(r[2]+r[3])]
+            cs_mr.snr_means.append(np.mean(data))
+            cs_mr.snr_stdevs.append(np.std(data))
+        for i in range(2,len(cs_mr.snr_rois)):
+            if cs_mr.snr_stdevs[i]<cs_mr.snr_stdevs[1]:
+                cs_mr.snr_stdevs[1] = cs_mr.snr_stdevs[i]
+                cs_mr.snr_means[1] = cs_mr.snr_means[i]
+                cs_mr.snr_rois[1] = cs_mr.snr_rois[i]
+        cs_mr.snr_stdevs = cs_mr.snr_stdevs[0:2]
+        cs_mr.snr_means = cs_mr.snr_means[0:2]
+        cs_mr.snr_rois = cs_mr.snr_rois[0:2]
+        
+        cs_mr.snr_bkgrnd = cs_mr.snr_means[1] # for Artifacts and FFU
+
+        # add difference image
+        r = cs_mr.snr_rois[0]
+        diff = (cs_mr.pixeldataIn[cs_mr.snr_slice]-cs_mr.pixeldataIn[cs_mr.snr_slice2])[r[0]:(r[0]+r[1]),r[2]:(r[2]+r[3])]
+        cs_mr.snr_means[1] = np.mean(diff)
+        cs_mr.snr_stdevs[1] = np.std(diff)
+
+        # report values
+        cs_mr.snr_SNC = cs_mr.snr_means[0]/cs_mr.snr_stdevs[0]
+        cs_mr.snr_SNB = np.sqrt(2.)*cs_mr.snr_means[0]/cs_mr.snr_stdevs[1]
+        cs_mr.snr_BsdB = cs_mr.snr_means[1]/cs_mr.snr_stdevs[1]
+
+        error = False
+        return error
+
+    def SNR_NEMA1(self, cs_mr):
+        """
+        SNR calculated using 1 image to calculated Signal and Noise
+
         The SNR is defined as: SNR = 0.655*R/sd(B) with,
         R: Mean pixel value of ROI at reference position.
         The reference position depends on the coil type.
         sd(B): Standard deviation of pixel values of ROI in a ghost-free part of the
         background of the image.
         0.655: Correction factor for backfolding of noise in background.
-        """
 
-        """
         Workflow:
             1. determine sequence (this determines which imslice to use)
             2. determine body_head coil or surface coils
@@ -999,6 +1094,8 @@ class PiQT_QC:
         cs_mr.snr_means = cs_mr.snr_means[0:2]
         cs_mr.snr_rois = cs_mr.snr_rois[0:2]
 
+        cs_mr.snr_bkgrnd = cs_mr.snr_means[1] # for Artifacts and FFU
+
         # report values
         cs_mr.snr_SNC = cs_mr.snr_means[0]/cs_mr.snr_stdevs[0]
         cs_mr.snr_SNB = 0.655*cs_mr.snr_means[0]/cs_mr.snr_stdevs[1]
@@ -1006,6 +1103,34 @@ class PiQT_QC:
 
         error = False
         return error
+
+    def SNR(self,cs_mr):
+        """
+        Test if 2 images are available for SNR. If so, use SNR_NEMA2, else use SNR_NEMA1
+        """
+        error = True
+        if cs_mr is None or cs_mr.dcmInfile is None or cs_mr.pixeldataIn is None:
+            print("[SNR] Error: Not a valid PiQT struct")
+            return error
+
+        # 1. image sequence
+        cs_mr.snr_slice = self.ImageSliceNumber(cs_mr,cs_mr.piqttest)
+        (seqname,imagetype,slice_number,echo_num,echo_time) = cs_mr.piqttest
+        if cs_mr.snr_slice <0:
+            print("[SNR] ERROR: Test", lit.stTestUniformity,"not available for given image",imagetype,echo_num)
+            return error
+
+        # Found 1 image, see if another one available
+        piqttest2 = [ c+1 if i == 3 else c for i,c in enumerate(cs_mr.piqttest) ]
+        (seqname2,imagetype2,slice_number2,echo_num2,echo_time2) = piqttest2
+        cs_mr.snr_slice2 = self.ImageSliceNumber(cs_mr,piqttest2)
+        if cs_mr.snr_slice2 <0:
+            print("[SNR] Test", lit.stTestUniformity,"no 2nd image available; will use NEMA method 1",imagetype,echo_num)
+            return self.SNR_NEMA1(cs_mr)
+        else:
+            print("[SNR] Test", lit.stTestUniformity,"2 images available; will use NEMA method 2",imagetype2,echo_num, echo_num2)
+            return self.SNR_NEMA2(cs_mr)
+
 
     def _movingaverage(self, data, ksize):
         # apply a moving average to of window width ksize
@@ -1048,7 +1173,7 @@ class PiQT_QC:
             print("[Artifact] Error: Not a valid PiQT struct")
             return error
         signal = cs_mr.snr_means[0]
-        bkgrnd = cs_mr.snr_means[1]
+        bkgrnd = cs_mr.snr_bkgrnd
 
         # 3. Artifact
         edge = 6 # 6
@@ -1154,7 +1279,7 @@ class PiQT_QC:
             print("[Artifact] Error: Not a valid PiQT struct")
             return error
         C = cs_mr.snr_means[0]
-        B = cs_mr.snr_means[1]
+        B = cs_mr.snr_bkgrnd
 
         # Step 2
         data = self._lowpassfilter(cs_mr.pixeldataIn[cs_mr.snr_slice].astype(float))
