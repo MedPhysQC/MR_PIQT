@@ -17,7 +17,7 @@
             "constraint_minlowhighmax": [
                 null, 
                 null, 
-                11.0, 
+                21.0, 
                 22.0
             ], 
             "description": "uniformity measure", 
