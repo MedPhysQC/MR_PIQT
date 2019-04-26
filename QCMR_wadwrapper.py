@@ -12,14 +12,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-# PyWAD is open-source software and consists of a set of modules written in python for the WAD-Software medical physics quality control software. 
-# The WAD Software can be found on https://github.com/wadqc
-# 
-# The pywad package includes modules for the automated analysis of QC images for various imaging modalities. 
-# PyWAD has been originaly initiated by Dennis Dickerscheid (AZN), Arnold Schilham (UMCU), Rob van Rooij (UMCU) and Tim de Wit (AMC) 
+# This code is an analysis module for WAD-QC 2.0: a server for automated 
+# analysis of medical images for quality control.
 #
+# The WAD-QC Software can be found on 
+# https://bitbucket.org/MedPhysNL/wadqc/wiki/Home
+# 
 #
 # Changelog:
+#   20190426: Fix for matplotlib>3
 #   20180418: treat DICOM Central_freq as float result
 #   20170929: missing NEMA linearity result
 #   20161220: remove class variables; remove testing stuff
@@ -30,7 +31,7 @@
 # /QCMR_wadwrapper.py -c Config/mr_philips_achieva30_sHB_umcu_series.json -d TestSet/StudyAchieva30 -r results_achieva30.json
 from __future__ import print_function
 
-__version__ = '20180418'
+__version__ = '20190426'
 __author__ = 'aschilham'
 
 import os
@@ -40,7 +41,15 @@ from wad_qc.module import pyWADinput
 from wad_qc.modulelibs import wadwrapper_lib
 
 if not 'MPLCONFIGDIR' in os.environ:
-    os.environ['MPLCONFIGDIR'] = "/tmp/.matplotlib" # if this folder already exists it must be accessible by the owner of WAD_Processor 
+    import pkg_resources
+    try:
+        #only for matplotlib < 3 should we use the tmp work around, but it should be applied before importing matplotlib
+        matplotlib_version = [int(v) for v in pkg_resources.get_distribution("matplotlib").version.split('.')]
+        if matplotlib_version[0]<3:
+            os.environ['MPLCONFIGDIR'] = "/tmp/.matplotlib" # if this folder already exists it must be accessible by the owner of WAD_Processor 
+    except:
+        os.environ['MPLCONFIGDIR'] = "/tmp/.matplotlib" # if this folder already exists it must be accessible by the owner of WAD_Processor 
+
 import matplotlib
 matplotlib.use('Agg') # Force matplotlib to not use any Xwindows backend.
 
