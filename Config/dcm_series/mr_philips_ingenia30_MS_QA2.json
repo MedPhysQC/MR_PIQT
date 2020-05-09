@@ -1,33 +1,33 @@
 {
     "actions": {
         "acqdatetime": {
-            "filters": {}, 
+            "filters": {},
             "params": {}
-        }, 
+        },
         "header_series": {
-            "filters": {}, 
+            "filters": {},
             "params": {}
-        }, 
+        },
         "qc_series": {
-            "filters": {}, 
+            "filters": {},
             "params": {}
         }
-    }, 
-    "cfgformat": "20180910", 
+    },
+    "cfgformat": "20180910",
     "comments": {
-        "author": "Arnold Schilham, UMCU", 
-        "creator": "generate_config_json.py version 20180912", 
-        "description": "MR/PIQT for Philips Ingenia 3.0T receive/transmit=MULTI COIL/S", 
-        "specfiles": "S: wa30r5v1l7_gr8_rf3_l08_irf.spec, T: wa30r5v1l7_gr8_rf3_l08_irf.typ", 
+        "author": "Arnold Schilham, UMCU",
+        "creator": "generate_config_json.py version 20180912",
+        "description": "MR/PIQT for Philips Ingenia 3.0T receive/transmit=MULTI COIL/S",
+        "specfiles": "S: wa30r5v1l7_gr8_rf3_l08_irf.spec, T: wa30r5v1l7_gr8_rf3_l08_irf.typ",
         "version": "20181105"
-    }, 
+    },
     "info": {
         "acqdatetime": {
             "params": {}
-        }, 
+        },
         "header_series": {
             "params": {}
-        }, 
+        },
         "qc_series": {
             "params": {}
         }

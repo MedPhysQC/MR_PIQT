@@ -20,6 +20,8 @@
 # 
 #
 # Changelog:
+#   20200508: do not exit, raise error
+#   20200508: dropping support for python2; dropping support for WAD-QC 1; toimage no longer exists in scipy.misc
 #   20190426: Fix for matplotlib>3
 #   20180418: treat DICOM Central_freq as float result
 #   20170929: missing NEMA linearity result
@@ -29,13 +31,11 @@
 #   20160620: remove quantity and units
 #
 # /QCMR_wadwrapper.py -c Config/mr_philips_achieva30_sHB_umcu_series.json -d TestSet/StudyAchieva30 -r results_achieva30.json
-from __future__ import print_function
 
-__version__ = '20190426'
+__version__ = '20200508'
 __author__ = 'aschilham'
 
 import os
-import sys
 # this will fail unless wad_qc is already installed
 from wad_qc.module import pyWADinput
 from wad_qc.modulelibs import wadwrapper_lib
@@ -318,8 +318,9 @@ def header_series(data, results, action):
         ## 1b. Run tests
         sliceno = qclib.ImageSliceNumber(cs,piqt)
         if sliceno <0:
-            print(logTag()+"[mrheader]: ", piqt, "not available for given image")
-            sys.exit()
+            msg = "{} [mrheader]: {} not available for given image".format(logTag(), piqt)
+            print(msg)
+            raise ValueError(msg)
 
         dicominfo = qclib.DICOMInfo(cs,info,sliceno)
         if len(dicominfo) >0:

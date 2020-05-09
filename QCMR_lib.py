@@ -11,7 +11,6 @@
 # 
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-from __future__ import print_function
 
 """
 Warning: THIS MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED! And make sure rescaling is corrected!
@@ -20,6 +19,8 @@ TODO: Linearity : m/p angle
 TODO: SliceProfile: phase shift
 TODO: pixelsizes
 Changelog:
+    20200508: fix for "slice not found" because pydicom 2 adds quotes to pydicom.valuerep.IS
+    20200508: dropping support for python2; dropping support for WAD-QC 1; toimage no longer exists in scipy.misc
     20181105: Added NEMA 2 image determination of SNR
     20180327: Removed some outdated comments.
     20171116: fix scipy version 1.0
@@ -46,7 +47,7 @@ Changelog:
     20131010: FFU calc of rad10 and rad20 by Euclidean distance transform
     20131009: Finished SNR; finished ArtLevel; finish FloodField Uniformity
 """
-__version__ = '20181105'
+__version__ = '20200508'
 __author__ = 'aschilham'
 
 import numpy as np
@@ -62,24 +63,32 @@ except ImportError:
     from . import QCMR_constants as lit
     from . import QCMR_math as mymath
 
-# First try if we are running wad1.0, since in wad2 libs are installed system-wide
+LOCALIMPORT = False
 try: 
     # try local folder
     import wadwrapper_lib
+    LOCALIMPORT = True
 except ImportError:
-    # try pyWADlib from plugin.py.zip
-    try: 
-        from pyWADLib import wadwrapper_lib
-
-    except ImportError: 
-        # wad1.0 solutions failed, try wad2.0 from system package wad_qc
-        from wad_qc.modulelibs import wadwrapper_lib
+    # try wad2.0 from system package wad_qc
+    from wad_qc.modulelibs import wadwrapper_lib
 
 # for image results
 from PIL import Image # image from pillow is needed
 from PIL import ImageDraw # imagedraw from pillow is needed, not pil
-import scipy.misc
+try:
+    from scipy.misc import toimage
+except (ImportError, AttributeError) as e:
+    try:
+        if LOCALIMPORT:
+            from wadwrapper_lib import toimage as toimage
+        else:
+            from wad_qc.modulelibs.wadwrapper_lib import toimage as toimage
+    except (ImportError, AttributeError) as e:
+        msg = "Function 'toimage' cannot be found. Either downgrade scipy or upgrade WAD-QC."
+        raise AttributeError("{}: {}".format(msg, e))
+
 # sanity check: we need at least scipy 0.10.1 to avoid problems mixing PIL and Pillow
+import scipy
 scipy_version = [int(v) for v in scipy.__version__ .split('.')]
 if scipy_version[0] == 0:
     if scipy_version[1]<10 or (scipy_version[1] == 10 and scipy_version[1]<1):
@@ -261,7 +270,7 @@ class PiQT_QC:
             for df in dicomfields:
                 key = df[0]
                 value = self.readDICOMtag(cs,key,i)
-                val+= str(value).strip()+"_"
+                val+= str(value).replace('"','').strip()+"_" # pydicom 2 adds "" to pydicom.valuerep.IS
             indices[val] = i
             #print(seqname,val,i)
 
@@ -1757,7 +1766,7 @@ class PiQT_QC:
         if kind == 'FFU': # flood field uniformity
             # use countour image as base
             # convert to 8-bit palette mapped image with lowest palette value used = 1
-            im = scipy.misc.toimage(cs_mr.resultimage['FFU'].transpose(),low=3,pal=pal) # MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
+            im = toimage(cs_mr.resultimage['FFU'].transpose(),low=3,pal=pal) # MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
 
             # add ROIs for SNR measurement
             for r in cs_mr.snr_rois:
@@ -1774,9 +1783,9 @@ class PiQT_QC:
             # use special image if available, else generate one
             if 'SLP' in cs_mr.resultimage:
                 # convert to 8-bit palette mapped image with lowest palette value used = 1
-                im = scipy.misc.toimage(cs_mr.resultimage['SLP'].transpose(),low=3,pal=pal) # MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
+                im = toimage(cs_mr.resultimage['SLP'].transpose(),low=3,pal=pal) # MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
             else:
-                im = scipy.misc.toimage(cs_mr.pixeldataIn[cs_mr.sp_slice].transpose(),low=3,pal=pal) # MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
+                im = toimage(cs_mr.pixeldataIn[cs_mr.sp_slice].transpose(),low=3,pal=pal) # MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
 
             # add locations of detected pins
             for pos in cs_mr.sp_pins:
@@ -1789,9 +1798,9 @@ class PiQT_QC:
         elif kind == 'LIN': # spatial linearity
             if 'SLP' in cs_mr.resultimage:
                 # convert to 8-bit palette mapped image with lowest palette value used = 1
-                im = scipy.misc.toimage(cs_mr.resultimage['LIN'].transpose(),low=3,pal=pal) # MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
+                im = toimage(cs_mr.resultimage['LIN'].transpose(),low=3,pal=pal) # MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
             else:
-                im = scipy.misc.toimage(cs_mr.pixeldataIn[cs_mr.lin_slice].transpose(),low=3,pal=pal) # MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
+                im = toimage(cs_mr.pixeldataIn[cs_mr.lin_slice].transpose(),low=3,pal=pal) # MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
 
             # add locations of GT pins
             for pos in cs_mr.lin_posgt:
@@ -1804,9 +1813,9 @@ class PiQT_QC:
         elif kind == 'MTF':
             if 'MTF' in cs_mr.resultimage:
                 # convert to 8-bit palette mapped image with lowest palette value used = 1
-                im = scipy.misc.toimage(cs_mr.resultimage['MTF'].transpose(),low=3,pal=pal) # MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
+                im = toimage(cs_mr.resultimage['MTF'].transpose(),low=3,pal=pal) # MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
             else:
-                im = scipy.misc.toimage(cs_mr.pixeldataIn[cs_mr.mtf_slice].transpose(),low=3,pal=pal) # MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
+                im = toimage(cs_mr.pixeldataIn[cs_mr.mtf_slice].transpose(),low=3,pal=pal) # MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
 
             # add boxes for measurements
             for ix,r in enumerate(cs_mr.mtf_rois):
