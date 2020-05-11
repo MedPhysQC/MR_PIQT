@@ -20,6 +20,7 @@
 # 
 #
 # Changelog:
+#   20200511: deal with different value types possible for same dicom tag
 #   20200508: do not exit, raise error
 #   20200508: dropping support for python2; dropping support for WAD-QC 1; toimage no longer exists in scipy.misc
 #   20190426: Fix for matplotlib>3
@@ -32,7 +33,7 @@
 #
 # /QCMR_wadwrapper.py -c Config/mr_philips_achieva30_sHB_umcu_series.json -d TestSet/StudyAchieva30 -r results_achieva30.json
 
-__version__ = '20200508'
+__version__ = '20200511'
 __author__ = 'aschilham'
 
 import os
@@ -360,7 +361,12 @@ def make_idname(qclib,cs,sliceno):
         ["0018,0081", "Echo_Time"], # 50
     ]
     for df in idfields:
-        idname += '_'+str(int(qclib.readDICOMtag(cs,df[0],sliceno)))# int should not be needed but for MR7
+        val = qclib.readDICOMtag(cs,df[0],sliceno)
+        try:
+            val = int(val)
+        except:
+            val = int(float(val))
+        idname += '_'+str(val)# int should not be needed but for MR7
     return idname
 
 

@@ -19,6 +19,7 @@ TODO: Linearity : m/p angle
 TODO: SliceProfile: phase shift
 TODO: pixelsizes
 Changelog:
+    20200511: deal with different value types possible for same dicom tag
     20200508: fix for "slice not found" because pydicom 2 adds quotes to pydicom.valuerep.IS
     20200508: dropping support for python2; dropping support for WAD-QC 1; toimage no longer exists in scipy.misc
     20181105: Added NEMA 2 image determination of SNR
@@ -47,13 +48,14 @@ Changelog:
     20131010: FFU calc of rad10 and rad20 by Euclidean distance transform
     20131009: Finished SNR; finished ArtLevel; finish FloodField Uniformity
 """
-__version__ = '20200508'
+__version__ = '20200511'
 __author__ = 'aschilham'
 
 import numpy as np
 import scipy.ndimage as scind
 import matplotlib.pyplot as plt
 import copy
+import pydicom as dcm
 
 try:
     # wad2.0 runs each module stand alone
@@ -195,10 +197,28 @@ class PiQT_QC:
         self.qcversion = __version__
 
 #----------------------------------------------------------------------
-    def readDICOMtag(self,cs,key,imslice=0): # slice=2 is image 3
-        value = wadwrapper_lib.readDICOMtag(key,cs.dcmInfile,imslice)
+
+    def _convert_dcmvalue_to_string(self, value):
+        """
+        helper to convert all dcm values to strings
+        """
+        if not isinstance(value, (str,bytes)):
+            try:
+                value = value.original_string
+            except:
+                pass
+        if isinstance(value, bytes):
+            value = value.decode("utf-8")
         return value
 
+    def readDICOMtag(self,cs,key,imslice=0): # slice=2 is image 3
+        value = wadwrapper_lib.readDICOMtag(key,cs.dcmInfile,imslice)
+ 
+        # make sure the value is a string
+        if isinstance(value, dcm.multival.MultiValue):
+            return [self._convert_dcmvalue_to_string(val) for val in value]
+
+        return self._convert_dcmvalue_to_string(value)
 
     def pix2phantommm(self,cs, pix):
         if cs.dicomMode == wadwrapper_lib.stMode2D:
@@ -270,7 +290,7 @@ class PiQT_QC:
             for df in dicomfields:
                 key = df[0]
                 value = self.readDICOMtag(cs,key,i)
-                val+= str(value).replace('"','').strip()+"_" # pydicom 2 adds "" to pydicom.valuerep.IS
+                val += value.strip()+"_" 
             indices[val] = i
             #print(seqname,val,i)
 
