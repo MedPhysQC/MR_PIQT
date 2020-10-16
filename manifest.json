@@ -1,7 +1,8 @@
 {
     "info": {
         "dbversion": "20180209",
-        "magic": "wad-qc-factory"
+        "magic": "wad-qc-factory",
+        "wadqcversion": "2.0.33"
     },
     "module": {
         "description": "MR PIQT",
