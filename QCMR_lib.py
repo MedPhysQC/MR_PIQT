@@ -19,6 +19,7 @@ TODO: Linearity : m/p angle
 TODO: SliceProfile: phase shift
 TODO: pixelsizes
 Changelog:
+    20230906: fix for Pillow 10.0.0
     20200511: deal with different value types possible for same dicom tag
     20200508: fix for "slice not found" because pydicom 2 adds quotes to pydicom.valuerep.IS
     20200508: dropping support for python2; dropping support for WAD-QC 1; toimage no longer exists in scipy.misc
@@ -48,7 +49,7 @@ Changelog:
     20131010: FFU calc of rad10 and rad20 by Euclidean distance transform
     20131009: Finished SNR; finished ArtLevel; finish FloodField Uniformity
 """
-__version__ = '20200511'
+__version__ = '20230906'
 __author__ = 'aschilham'
 
 import numpy as np
@@ -1879,5 +1880,9 @@ class PiQT_QC:
         imsi = im.size
         if max(imsi)>2048:
             ratio = 2048./max(imsi)
-            im = im.resize( (int(imsi[0]*ratio+.5), int(imsi[1]*ratio+.5)),Image.ANTIALIAS)
+            try:
+                im = im.resize( (int(imsi[0]*ratio+.5), int(imsi[1]*ratio+.5)),Image.ANTIALIAS)
+            except AttributeError as e:
+                # PIL 10.0.0 deprecates ANTIALIAS
+                im = im.resize( (int(imsi[0]*ratio+.5), int(imsi[1]*ratio+.5)),Image.Resampling.LANCZOS)
         im.save(fname)

@@ -20,6 +20,7 @@
 # 
 #
 # Changelog:
+#   20230906: remove deprecated warning; Pillow 10.0.0
 #   20200511: deal with different value types possible for same dicom tag
 #   20200508: do not exit, raise error
 #   20200508: dropping support for python2; dropping support for WAD-QC 1; toimage no longer exists in scipy.misc
@@ -33,7 +34,7 @@
 #
 # /QCMR_wadwrapper.py -c Config/mr_philips_achieva30_sHB_umcu_series.json -d TestSet/StudyAchieva30 -r results_achieva30.json
 
-__version__ = '20200511'
+__version__ = '20230906'
 __author__ = 'aschilham'
 
 import os
@@ -42,10 +43,17 @@ from wad_qc.module import pyWADinput
 from wad_qc.modulelibs import wadwrapper_lib
 
 if not 'MPLCONFIGDIR' in os.environ:
-    import pkg_resources
+    try:
+        # new method
+        from importlib.metadata import version as pkg_version
+    except:
+        # deprecated method
+        import pkg_resources
+        def pkg_version(what):
+            return pkg_resources.get_distribution(what).version
     try:
         #only for matplotlib < 3 should we use the tmp work around, but it should be applied before importing matplotlib
-        matplotlib_version = [int(v) for v in pkg_resources.get_distribution("matplotlib").version.split('.')]
+        matplotlib_version = [int(v) for v in pkg_version("matplotlib").split('.')]
         if matplotlib_version[0]<3:
             os.environ['MPLCONFIGDIR'] = "/tmp/.matplotlib" # if this folder already exists it must be accessible by the owner of WAD_Processor 
     except:
